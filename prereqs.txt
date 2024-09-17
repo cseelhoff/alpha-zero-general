@@ -1,0 +1,10 @@
+sudo cp /var/cudnn-local-repo-ubuntu2204-8.9.7.29/cudnn-local-8AE81B24-keyring.gpg /usr/share/keyrings/
+wget https://download.microsoft.com/download/8/d/a/8da4fb8e-3a9b-4e6a-bc9a-72ff64d7a13c/NVIDIA-Linux-x86_64-535.161.08-grid-azure.run
+wget https://developer.download.nvidia.com/compute/cuda/11.8.0/local_installers/cuda_11.8.0_520.61.05_linux.run
+wget https://developer.download.nvidia.com/compute/cudnn/secure/8.9.7/local_installers/11.x/cudnn-local-repo-ubuntu2204-8.9.7.29_1.0-1_amd64.deb?Hb4uIt7k-ErbcASNrKSKpyTUf6XtyxSXLQv7SBdwnu0l3DEmLyr3iklpPkZwbBYXIyzKL2nKi82KfQUzy8nCTbnmW4vnWhya81ep6WMsqsJZOYN7Z9IR7FQdhQ_WV9jJOXFHJpuEkCHAqudjjWv3r1OdwyK5tVHh7VrMXO6iVroqMb3OM7cTl0s7Gdq1ljXSI6JPpz8CRJIwtFlv610_myH4-Is=&t=eyJscyI6InJlZiIsImxzZCI6IlJFRi1kb2NzLm52aWRpYS5jb20vIn0=
+chmod +x NVIDIA-Linux-x86_64-535.161.08-grid-azure.run cuda_11.8.0_520.61.05_linux.run
+./NVIDIA-Linux-x86_64-535.161.08-grid-azure.run
+sudo sh cuda_11.8.0_520.61.05_linux.run
+sudo dpkg -i cudnn-local-repo-ubuntu2204-8.9.7.29_1.0-1_amd64.deb
+apt install libcudnn8
+pip install --upgrade numpy torch
