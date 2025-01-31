@@ -2,7 +2,6 @@ from __future__ import print_function
 import sys
 sys.path.append('..')
 from Game import Game
-from .OthelloLogic import Board
 import numpy as np
 import ctypes
 from ctypes import c_int, c_float, c_void_p, c_bool, POINTER
@@ -11,24 +10,23 @@ class OAAAGame(Game):
     def __init__(self):
         # Load the compiled Odin library
         self.lib = ctypes.CDLL('./liboaaa.so')  # or .dll on Windows
-        
         # Set up function signatures
         self.lib.get_init_board.restype = c_void_p
-
-        self.lib.get_board.restype = POINTER(c_float)
-
         self.lib.get_board_size.restype = (c_int, c_int)
-
         self.lib.get_action_size.restype = c_int
-
         self.lib.get_next_state.argtypes = [c_void_p, c_int, c_int]
         self.lib.get_next_state.restype = (c_void_p, c_int)
 
         self.lib.get_valid_moves.argtypes = [c_void_p, c_int]
         self.lib.get_valid_moves.restype = POINTER(c_bool)
 
+        self.lib.get_game_ended.argtypes = [c_void_p, c_int]
         self.lib.get_game_ended.restype = c_float
 
+        self.lib.get_canonical_form.argtypes = [c_void_p, c_int]
+        self.lib.get_canonical_form.restype = POINTER(c_float)
+
+        self.lib.get_string_representation.argtypes = [c_void_p]
         self.lib.get_string_representation.restype = c_char_p
         
     def getInitBoard(self):
