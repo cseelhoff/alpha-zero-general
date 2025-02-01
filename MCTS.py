@@ -38,7 +38,24 @@ class MCTS():
             self.search(canonicalBoard)
 
         s = self.game.stringRepresentation(canonicalBoard)
-        counts = [self.Nsa[(s, a)] if (s, a) in self.Nsa else 0 for a in range(self.game.getActionSize())]
+        # Initialize an empty list to store visit counts for each action
+        counts = []
+        # Get the total number of possible actions
+        action_size = self.game.getActionSize()
+        
+        # Iterate through each possible action
+        for a in range(action_size):
+            # Create the state-action pair
+            state_action_pair = (s, a)
+            
+            # Get the visit count for this state-action pair
+            # If we haven't visited this pair before, use 0
+            if state_action_pair in self.Nsa:
+                visit_count = self.Nsa[state_action_pair]
+            else:
+                visit_count = 0
+                
+            counts.append(visit_count)
 
         if temp == 0:
             bestAs = np.array(np.argwhere(counts == np.max(counts))).flatten()
@@ -76,13 +93,15 @@ class MCTS():
 
         if s not in self.Es:
             self.Es[s] = self.game.getGameEnded(canonicalBoard, 1)
-        if self.Es[s] != 0:
+        # if self.Es[s] != 0:
+        if self.Es[s] < -.99 or self.Es[s] > .99:
             # terminal node
             return -self.Es[s]
 
         if s not in self.Ps:
             # leaf node
-            self.Ps[s], v = self.nnet.predict(canonicalBoard)
+            self.Ps[s], v = self.nnet.predict(self.game.board_ptr_to_np_array(canonicalBoard))
+            # self.Ps[s], v = self.nnet.predict(canonicalBoard)
             valids = self.game.getValidMoves(canonicalBoard, 1)
             self.Ps[s] = self.Ps[s] * valids  # masking invalid moves
             sum_Ps_s = np.sum(self.Ps[s])

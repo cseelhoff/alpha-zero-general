@@ -117,3 +117,6 @@ class OthelloGame(Game):
             print("|")
 
         print("-----------------------")
+
+    def board_ptr_to_np_array(self, board):
+        return board
