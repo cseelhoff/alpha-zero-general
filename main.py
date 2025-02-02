@@ -1,6 +1,18 @@
 import logging
 
 import coloredlogs
+import numpy as np
+import random
+import torch
+
+# Set random seeds for reproducibility
+random.seed(42)
+np.random.seed(42)
+torch.manual_seed(42)
+if torch.cuda.is_available():
+    torch.cuda.manual_seed(42)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
 
 from Coach import Coach
 from oaaa.OAAAGame import OAAAGame as Game
@@ -16,7 +28,7 @@ coloredlogs.install(level='INFO')  # Change this to DEBUG to see more info.
 
 args = dotdict({
     'numIters': 1000,
-    'numEps': 100,              # Number of complete self-play games to simulate during a new iteration.
+    'numEps': 20,              # Number of complete self-play games to simulate during a new iteration.
     'tempThreshold': 15,        #
     'updateThreshold': 0.6,     # During arena playoff, new neural net will be accepted if threshold or more of games are won.
     'maxlenOfQueue': 200000,    # Number of game examples to train the neural networks.

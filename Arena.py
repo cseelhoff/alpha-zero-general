@@ -45,8 +45,9 @@ class Arena():
         for player in players[0], players[2]:
             if hasattr(player, "startGame"):
                 player.startGame()
-
-        while self.game.getGameEnded(board, curPlayer) == 0:
+        
+        verbose = True
+        while True:
             it += 1
             if verbose:
                 assert self.display
@@ -67,6 +68,9 @@ class Arena():
                 opponent.notify(board, action)
 
             board, curPlayer = self.game.getNextState(board, curPlayer, action)
+            r = self.game.getGameEnded(board, curPlayer)
+            if r > .99 or r < -.99 or it > 400:
+                break
 
         for player in players[0], players[2]:
             if hasattr(player, "endGame"):

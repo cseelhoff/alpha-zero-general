@@ -74,7 +74,8 @@ class OAAAGame(Game):
     def getSymmetries(self, canonicalBoard, pi):
         # mirror, rotational
         # If no meaningful symmetries exist in OAAA
-        return [(canonicalBoard, pi)]
+        board_nparray = self.board_ptr_to_np_array(canonicalBoard)
+        return [(board_nparray, pi)]
         
     def stringRepresentation(self, board):
         # if not isinstance(board, (c_void_p, int)):

@@ -34,20 +34,26 @@ class OAAA(nn.Module):
         self.fc_value = nn.Linear(128, 1)
 
     def forward(self, s):
-        # Input shape: (N, 878, 1) -> reshape to (N, 878)
-        s = s.view(-1, self.input_size)
-        
-        # Apply layers with dropout
+        # print(f"Input shape: {s.shape}")
+        # batch_size = s.size(0)
+        # s = s.view(batch_size, -1)
+        s = s.view(-1, 1, 878, 1)                # batch_size x 1 x board_x x board_y
+        # print(f"Reshaped shape: {s.shape}")
+        s = s.view(-1, 878)
+        # print(f"Reshaped shape 2: {s.shape}")
+
         s = F.dropout(F.relu(self.fc_bn1(self.fc1(s))), p=self.args.dropout, training=self.training)
+        # print(f"After fc1: {s.shape}")
+        
         s = F.dropout(F.relu(self.fc_bn2(self.fc2(s))), p=self.args.dropout, training=self.training)
+        # print(f"After fc2: {s.shape}")
+        
         s = F.dropout(F.relu(self.fc_bn3(self.fc3(s))), p=self.args.dropout, training=self.training)
+        # print(f"After fc3: {s.shape}")
         
-        # Policy head
-        pi = self.fc_policy(s)                                                                   # batch_size x action_size
-        pi = F.log_softmax(pi, dim=1)
-        
-        # Value head
-        v = self.fc_value(s)                                                                     # batch_size x 1
-        v = torch.tanh(v)
-        
+        pi = F.log_softmax(self.fc_policy(s), dim=1)
+        v = torch.tanh(self.fc_value(s))
+        return pi, v
+
+        v = torch.tanh(self.fc_value(s))
         return pi, v
