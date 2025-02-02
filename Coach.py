@@ -66,7 +66,7 @@ class Coach():
             r = self.game.getGameEnded(board, self.curPlayer)
 
             # if r != 0:
-            if episodeStep > 400 or r < -.99 or r > .99:
+            if episodeStep > 100 or r < -.99 or r > .99:
                 return [(x[0], x[2], r * ((-1) ** (x[1] != self.curPlayer))) for x in trainExamples]
 
     def learn(self):

@@ -46,7 +46,6 @@ class Arena():
             if hasattr(player, "startGame"):
                 player.startGame()
         
-        verbose = True
         while True:
             it += 1
             if verbose:
@@ -69,7 +68,7 @@ class Arena():
 
             board, curPlayer = self.game.getNextState(board, curPlayer, action)
             r = self.game.getGameEnded(board, curPlayer)
-            if r > .99 or r < -.99 or it > 400:
+            if r > .99 or r < -.99 or it > 100:
                 break
 
         for player in players[0], players[2]:
@@ -80,6 +79,8 @@ class Arena():
             assert self.display
             print("Game over: Turn ", str(it), "Result ", str(self.game.getGameEnded(board, 1)))
             self.display(board)
+        else: 
+            print("Game over: Turn ", str(it), "Result ", str(self.game.getGameEnded(board, 1)))
         return curPlayer * self.game.getGameEnded(board, curPlayer)
 
     def playGames(self, num, verbose=False):
@@ -99,10 +100,10 @@ class Arena():
         draws = 0
         for _ in tqdm(range(num), desc="Arena.playGames (1)"):
             gameResult = self.playGame(verbose=verbose)
-            if gameResult == 1:
-                oneWon += 1
-            elif gameResult == -1:
-                twoWon += 1
+            if gameResult > 0:
+                oneWon += gameResult
+            elif gameResult < 0:
+                twoWon -= gameResult
             else:
                 draws += 1
 
@@ -110,10 +111,10 @@ class Arena():
 
         for _ in tqdm(range(num), desc="Arena.playGames (2)"):
             gameResult = self.playGame(verbose=verbose)
-            if gameResult == -1:
-                oneWon += 1
-            elif gameResult == 1:
-                twoWon += 1
+            if gameResult < 0:
+                oneWon -= gameResult
+            elif gameResult > 0:
+                twoWon += gameResult
             else:
                 draws += 1
 
