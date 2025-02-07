@@ -7,7 +7,6 @@ EPS = 1e-8
 
 log = logging.getLogger(__name__)
 
-
 class MCTS():
     """
     This class handles the MCTS tree.
@@ -24,7 +23,7 @@ class MCTS():
 
         self.Es = {}  # stores game.getGameEnded ended for board s
         self.Vs = {}  # stores game.getValidMoves for board s
-
+        self.greatest_abs_score = 0
     def getActionProb(self, canonicalBoard, temp=1):
         """
         This function performs numMCTSSims simulations of MCTS starting from
@@ -91,10 +90,17 @@ class MCTS():
 
         s = self.game.stringRepresentation(canonicalBoard)
 
+        game_score = self.game.getGameEnded(canonicalBoard, 1)
+        if abs(game_score) > self.greatest_abs_score:
+            self.greatest_abs_score = abs(game_score)
+            # print("greatest_abs_score: ", self.greatest_abs_score)
+        if game_score > -0.5 or game_score < 0.5:
+            game_score = 0
         if s not in self.Es:
-            self.Es[s] = self.game.getGameEnded(canonicalBoard, 1)
-        # if self.Es[s] != 0:
-        if self.Es[s] < -.99 or self.Es[s] > .99:
+            self.Es[s] = game_score
+        if self.Es[s] != 0:
+            print("Es[s]: ", self.Es[s])
+            self.greatest_abs_score = 0
             # terminal node
             return -self.Es[s]
 

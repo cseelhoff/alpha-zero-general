@@ -12,3 +12,5 @@ checkpoints/
 .idea/
 
 venv/
+
+.venv/

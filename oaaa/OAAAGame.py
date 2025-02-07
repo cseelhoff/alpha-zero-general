@@ -15,7 +15,7 @@ class NextState(Structure):
 class OAAAGame(Game):
     def __init__(self, size1):
         # Load the compiled Odin library
-        self.lib = ctypes.CDLL('../oaaa/bin/liboaaa.so')  # or .dll on Windows
+        self.lib = ctypes.CDLL('../oaaa/build/liboaaa.so')  # or .dll on Windows
         # Set up function signatures
         print('self.lib')
         self.lib.get_init_board.restype = c_void_p

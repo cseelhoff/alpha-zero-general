@@ -68,7 +68,7 @@ class Arena():
 
             board, curPlayer = self.game.getNextState(board, curPlayer, action)
             r = self.game.getGameEnded(board, curPlayer)
-            if r > .99 or r < -.99 or it > 100:
+            if r > 0.2 or r < -0.2 or it > 10000:
                 break
 
         for player in players[0], players[2]:
@@ -100,10 +100,10 @@ class Arena():
         draws = 0
         for _ in tqdm(range(num), desc="Arena.playGames (1)"):
             gameResult = self.playGame(verbose=verbose)
-            if gameResult > 0:
-                oneWon += gameResult
-            elif gameResult < 0:
-                twoWon -= gameResult
+            if gameResult > 0.2:
+                oneWon += 1
+            elif gameResult < -0.2:
+                twoWon += 1
             else:
                 draws += 1
 
@@ -111,10 +111,10 @@ class Arena():
 
         for _ in tqdm(range(num), desc="Arena.playGames (2)"):
             gameResult = self.playGame(verbose=verbose)
-            if gameResult < 0:
-                oneWon -= gameResult
-            elif gameResult > 0:
-                twoWon += gameResult
+            if gameResult < -0.2:
+                oneWon += 1
+            elif gameResult > 0.2:
+                twoWon += 1
             else:
                 draws += 1
 
