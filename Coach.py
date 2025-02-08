@@ -64,7 +64,8 @@ class Coach():
             board, self.curPlayer = self.game.getNextState(board, self.curPlayer, action)
 
             r = self.game.getGameEnded(board, self.curPlayer)
-            if episodeStep <= 100 and r > -0.99 and r < 0.99:
+            # print("Turn ", str(episodeStep), "Player ", str(self.curPlayer), "  Action ", str(action), "  Result ", str(r), " Rev Result ", self.game.getGameEnded(board, self.curPlayer * -1))
+            if episodeStep <= 1000 and r > -0.99 and r < 0.99:
                 r = 0
 
             if r != 0:

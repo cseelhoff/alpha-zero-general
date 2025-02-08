@@ -50,7 +50,6 @@ class Arena():
             it += 1
             if verbose:
                 assert self.display
-                print("Turn ", str(it), "Player ", str(curPlayer))
                 self.display(board)
             action = players[curPlayer + 1](self.game.getCanonicalForm(board, curPlayer))
 
@@ -68,7 +67,8 @@ class Arena():
 
             board, curPlayer = self.game.getNextState(board, curPlayer, action)
             r = self.game.getGameEnded(board, curPlayer)
-            if r > 0.2 or r < -0.2 or it > 10000:
+            # print("Turn ", str(it), "Player ", str(curPlayer), "  Action ", str(action), "  Result ", str(r))
+            if r > 0.99 or r < -0.99 or it > 1000:
                 break
 
         for player in players[0], players[2]:
@@ -100,9 +100,9 @@ class Arena():
         draws = 0
         for _ in tqdm(range(num), desc="Arena.playGames (1)"):
             gameResult = self.playGame(verbose=verbose)
-            if gameResult > 0.2:
+            if gameResult > 0.1:
                 oneWon += 1
-            elif gameResult < -0.2:
+            elif gameResult < -0.1:
                 twoWon += 1
             else:
                 draws += 1
@@ -111,9 +111,9 @@ class Arena():
 
         for _ in tqdm(range(num), desc="Arena.playGames (2)"):
             gameResult = self.playGame(verbose=verbose)
-            if gameResult < -0.2:
+            if gameResult < -0.1:
                 oneWon += 1
-            elif gameResult > 0.2:
+            elif gameResult > 0.1:
                 twoWon += 1
             else:
                 draws += 1

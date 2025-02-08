@@ -94,12 +94,12 @@ class MCTS():
         if abs(game_score) > self.greatest_abs_score:
             self.greatest_abs_score = abs(game_score)
             # print("greatest_abs_score: ", self.greatest_abs_score)
-        if game_score > -0.5 or game_score < 0.5:
+        if game_score > -0.99 or game_score < 0.99:
             game_score = 0
         if s not in self.Es:
             self.Es[s] = game_score
         if self.Es[s] != 0:
-            print("Es[s]: ", self.Es[s])
+            # print("Es[s]: ", self.Es[s])
             self.greatest_abs_score = 0
             # terminal node
             return -self.Es[s]
