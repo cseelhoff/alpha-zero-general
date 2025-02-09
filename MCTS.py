@@ -91,8 +91,8 @@ class MCTS():
         s = self.game.stringRepresentation(canonicalBoard)
 
         game_score = self.game.getGameEnded(canonicalBoard, 1)
-        if abs(game_score) > self.greatest_abs_score:
-            self.greatest_abs_score = abs(game_score)
+        # if abs(game_score) > self.greatest_abs_score:
+        #     self.greatest_abs_score = abs(game_score)
             # print("greatest_abs_score: ", self.greatest_abs_score)
         if game_score > -0.99 or game_score < 0.99:
             game_score = 0
@@ -100,7 +100,7 @@ class MCTS():
             self.Es[s] = game_score
         if self.Es[s] != 0:
             # print("Es[s]: ", self.Es[s])
-            self.greatest_abs_score = 0
+            # self.greatest_abs_score = 0
             # terminal node
             return -self.Es[s]
 

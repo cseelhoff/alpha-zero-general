@@ -65,7 +65,7 @@ class Coach():
 
             r = self.game.getGameEnded(board, self.curPlayer)
             # print("Turn ", str(episodeStep), "Player ", str(self.curPlayer), "  Action ", str(action), "  Result ", str(r), " Rev Result ", self.game.getGameEnded(board, self.curPlayer * -1))
-            if episodeStep <= 1000 and r > -0.99 and r < 0.99:
+            if episodeStep < 100 and r > -0.99 and r < 0.99:
                 r = 0
 
             if r != 0:
@@ -122,7 +122,8 @@ class Coach():
             pwins, nwins, draws = arena.playGames(self.args.arenaCompare)
 
             log.info('NEW/PREV WINS : %d / %d ; DRAWS : %d' % (nwins, pwins, draws))
-            if pwins + nwins == 0 or float(nwins) / (pwins + nwins) < self.args.updateThreshold:
+            # if pwins + nwins == 0 or float(nwins) / (pwins + nwins) < self.args.updateThreshold:
+            if pwins * 2 * self.args.updateThreshold > nwins :
                 log.info('REJECTING NEW MODEL')
                 self.nnet.load_checkpoint(folder=self.args.checkpoint, filename='temp.pth.tar')
             else:
